@@ -4,7 +4,7 @@
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL
     set <- function(y) {
-      x <<- y
+      x <<- y ## assign a 'global' value to an x 
       m <<- NULL
     }
     get <- function() x
@@ -22,18 +22,16 @@ makeCacheMatrix <- function(x = matrix()) {
 ## then the cachesolve should retrieve the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  ## first checks to see if the inverse has already been calculated.
+  ## If so, get the inverse from the cache and skips the computation.
   m <- x$getsolve()
   if(!is.null(m)) {
     message("getting cached data")
-    return(m)
+    return(m) ## Return a matrix that is the inverse of 'x'
   }
+  ## Else, calculate the inverse of x and set the value of
+  ## the inverse in the cache via the solve function.
   data <- x$get()
-#   a=nrow(m);b=ncol(m);
-#   if(a==b) { 
-#     message("You must pass in a square matrix (nrow(x) must equal ncol(x))")
-#     return
-#   }
   m <- solve(data, ...)
   
   x$setsolve(m)
